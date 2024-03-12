@@ -49,7 +49,7 @@ enum PersonError {
     ParseAgeInt(ParseIntError),
 }
 impl From<&str> for Person {
-    fn from(s: &str) -> Self {
+    fn from(s: &str) -> Person {
         if s.is_empty() || s.len() == 0 {
             return Person::default();
         }
