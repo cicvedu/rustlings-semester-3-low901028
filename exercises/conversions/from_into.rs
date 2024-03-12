@@ -50,32 +50,50 @@ enum PersonError {
 }
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
-        if s.is_empty() || s.len() == 0 {
-            return Person::default();
+        // /**方法一*/
+        match s.split_once(',') {
+            Some((name, age)) => {
+                if name.is_empty() {
+                    Person::default()
+                } else if let Ok(ag) = age.parse::<usize>() {
+                    Person {
+                        name: name.into(),
+                        age: ag,
+                    }
+                } else {
+                    Person::default()
+                }
+            }
+            _ => Person::default(),
         }
 
-        // split input
-        let mut iter = s.split(',');
-        // === name
-        let name = String::from(iter.next().unwrap());
-        // name empty
-        if name.is_empty() || name.len() == 0{
-            return Person::default();
-        };
-        let age_item = iter.next();
-        if age_item.is_none() {
-            return Person::default();
-        }
-        let age = age_item.unwrap().parse::<usize>();
-        if age.is_err() {
-            return Person::default();
-        }
-
-        if iter.next().is_some() {
-            return Person::default();
-        }
-
-        return Person { name, age:age.unwrap() };
+        // /**方法二*/
+        // if s.is_empty() || s.len() == 0 {
+        //     return Person::default();
+        // }
+        //
+        // // split input
+        // let mut iter = s.split(',');
+        // // === name
+        // let name = String::from(iter.next().unwrap());
+        // // name empty
+        // if name.is_empty() || name.len() == 0{
+        //     return Person::default();
+        // };
+        // let age_item = iter.next();
+        // if age_item.is_none() {
+        //     return Person::default();
+        // }
+        // let age = age_item.unwrap().parse::<usize>();
+        // if age.is_err() {
+        //     return Person::default();
+        // }
+        //
+        // if iter.next().is_some() {
+        //     return Person::default();
+        // }
+        //
+        // return Person { name, age:age.unwrap() };
     }
 }
 
